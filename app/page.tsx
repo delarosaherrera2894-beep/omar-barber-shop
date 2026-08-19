@@ -8,8 +8,8 @@ const supabase = createClient(
 import { useEffect, useMemo, useState } from "react";
 
 const servicios = [
-  { nombre: "Promoción escolar niño", precio: 60 },
-  { nombre: "Corte de niño", precio: 70 },
+  { nombre: "Promoción escolar niño", precio: 80 },
+  { nombre: "Corte de niño", precio: 80 },
   { nombre: "Corte de adulto", precio: 100 },
   { nombre: "Corte Barba y ceja", precio:100  },
 ];
@@ -95,8 +95,8 @@ const [rol, setRol] = useState<"admin" | "trabajador" | null>(null);
 
 
 
-function iniciarSesion() {
-  if (usuario === "jairo" && contrasena === "1234") {
+async function iniciarSesion() {
+  if (usuario === "Omar" && contrasena === "101028") {
     setRol("admin");
     setMostrarAdmin(true);
     return;
@@ -109,20 +109,28 @@ function iniciarSesion() {
   }
 
   alert("Usuario o contraseña incorrectos");
-}  
+}
 
 useEffect(() => {
-    const guardadas = localStorage.getItem("omar-barber-citas");
+  async function cargarCitas() {
+    const { data, error } = await supabase
+      .from("citas")
+      .select("*")
+      .order("fecha", { ascending: true })
+      .order("hora", { ascending: true });
 
-    if (guardadas) {
-      try {
-        setCitas(JSON.parse(guardadas));
-      } catch {
-        setCitas([]);
-      }
+    if (error) {
+      console.error("Error al cargar citas:", error);
+      return;
     }
-  }, []);
 
+    if (data) {
+      setCitas(data);
+    }
+  }
+
+  cargarCitas();
+}, []);
   const citasActivas = useMemo(() => {
     const ahora = new Date();
 
