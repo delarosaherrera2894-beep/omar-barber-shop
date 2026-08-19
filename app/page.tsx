@@ -135,7 +135,7 @@ useEffect(() => {
     const ahora = new Date();
 
     return citas.filter((cita) => {
-      const fechaHora = new Date(`${cita.fecha}T${cita.hora}:00`);
+      const fechaHora = new Date(`${cita.fecha}T${cita.hora}:`);
       return fechaHora > ahora;
     });
   }, [citas]);
