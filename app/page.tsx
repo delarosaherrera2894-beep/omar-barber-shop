@@ -125,6 +125,7 @@ useEffect(() => {
     }
 
     if (data) {
+      console.log("CITAS DE SUPABASE:", data);
       setCitas(data);
     }
   }
